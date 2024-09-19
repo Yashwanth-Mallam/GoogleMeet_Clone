@@ -1,16 +1,16 @@
 // Import the 'http' module
-const http = require('http');
+const express = require('express');
+const path = require("path");
+var app = express();
+var server = app.listen(5500,function(){
+  console.log("sever Lisining at port 3000");
+})
 
-// Create a simple server
-var sever = http.createServer((req, res) => {
-  // Set the response header (status code and content type)
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  
-  // Send a response to the client
-  res.end('Hello, world!\n');
+const io = require("socket.io")(server,{
+  allowEIO3:true,
 });
+app.use(express.static(path.join(__dirname,"")));//frontend/index.html.(if u wanna connet it to the client side.).
 
-// Listen on port 3000
-sever.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-});
+// initiating the soceket.
+io.on("connection",(socket)=>{
+  console.log("socket id is",socket.id);});

@@ -5,11 +5,17 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server"
   },
   "keywords": [
     "googlemeet"
   ],
   "author": "yashwanth",
-  "license": "ISC"
+  "license": "ISC",
+  "express": "^4.17.1",
+  "socket.io": "^4.1.2",
+  "dependencies": {
+    "express": "^4.21.0",
+    "socket.io": "^4.7.5"
+  }
 }

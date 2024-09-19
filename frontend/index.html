@@ -10,6 +10,9 @@
     <script src="https://kit.fontawesome.com/7433d3320f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./CSS/responsive.css">
     <title>Google Meet Clone</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="server.js"></script>
+    <script scr="js/app.js"></script>
 </head>
 
 <body>
@@ -38,8 +41,8 @@
                 class="md:inline-flex md:items-center md:bg-white md:text-blue-600 md:border md:border-gray-300 md:py-2 md:px-4 md:mx-2 md:focus:outline-none md:hover:bg-white md:hover:border md:hover:border-blue-600 md:rounded md:text-base md:mt-4 md:mt-0 hidden">Join
                 a meeting</button>
             <button type="button"
-                class="md:inline-flex md:items-center md:bg-blue-600 md:text-white md:border-0 md:py-2 md:px-4 md:focus:outline-none md:hover:bg-blue-800 md:rounded md:text-base md:mt-4 md:mt-0 hidden">Start
-                a meeting</button>
+                class="md:inline-flex md:items-center md:bg-blue-600 md:text-white md:border-0 md:py-2 md:px-4 md:focus:outline-none md:hover:bg-blue-800 md:rounded md:text-base md:mt-4 md:mt-0 hidden"><a href="Room.html">Start
+                    a meeting</a></button>
         </div>
     </header>
 
@@ -58,7 +61,7 @@
                     <button type="button"
                         class="md:inline-flex text-white bg-blue-600 border-0 py-2 px-6 md:mb-0 mb-4 focus:outline-none             hover:bg-blue-800 rounded text-lg flex justify-center">
                         <i class="fa-solid fa-video pr-2 py-1.5"></i>
-                        Start a meeting
+                        <a href="Room.html">Start a meeting</a>
                     </button>
 
                     <input type="text" id="join_meeting_input"
