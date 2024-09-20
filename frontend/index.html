@@ -13,6 +13,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="server.js"></script>
     <script scr="js/app.js"></script>
+    <script>
+        $(function(){S
+            const urlparms = new URLSearchParams(window.location.search);
+            var meeting_id = urlparms.get ('meetingID');
+            var user_id = window.prompt("enter your username:");
+            if(!user_id||meeting_id){
+                alert("User id or meeting id is missing!");
+                window.location.href='/frontend/index.html';
+                return;
+            }
+        })  
+    </script>
 </head>
 
 <body>
