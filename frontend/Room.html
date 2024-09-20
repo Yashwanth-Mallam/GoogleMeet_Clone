@@ -3,10 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Google Meet Clone - Meeting Room</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>This the Room page</h1>
-    <p>index.html is going to directing this page, and this is the page where the actual meeting held</p>
+    <!-- Meeting Room Container -->
+    <div class="meeting-room">
+        <!-- Header with meeting controls and status -->
+        <div class="header">
+            <!-- Mute status at the top right -->
+            <div class="status-bar">
+                <span id="mic-status" class="status-icon">🔇</span>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content">
+            <!-- Centered User Avatar -->
+            <div class="user-info">
+                <div class="avatar">
+                    <img id="user-avatar" src="images/default-avatar.png" alt="User Avatar">
+                </div>
+                <p id="user-name">User Name</p>
+            </div>
+        </div>
+
+        <!-- Footer with additional controls -->
+        <div class="footer">
+            <!-- Meeting details (Time, Meeting Code) -->
+            <div class="meeting-details">
+                <p id="meeting-time">5:36 PM</p>
+                <p id="meeting-code">zex-wmrz-aha</p>
+            </div>
+            
+            <!-- Control bar with icons -->
+            <div class="control-bar">
+                <button class="control-icon" id="mute-button">
+                    <img src="images/mic-off-icon.png" alt="Mute">
+                </button>
+                <button class="control-icon" id="camera-button">
+                    <img src="images/camera-off.png" alt="Camera">
+                </button>
+                <button class="control-icon">
+                    <img src="images/sharescreen.png" alt="Share Screen">
+                </button>
+                <button class="control-icon">
+                    <img src="images/hand-raise.png" alt="Hand Raise">
+                </button>
+                <button class="control-icon" id="hangup-button">
+                    <img src="images/hangup.png" alt="Hang Up">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
