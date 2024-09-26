@@ -6,8 +6,8 @@
 const express = require('express');
 const path = require("path");
 var app = express();
-var server = app.listen(5500,function(){
-  console.log("sever Lisining at port 5500");
+var server = app.listen(3000,function(){
+  console.log("sever Lisining at port 3000");
 })
 
 
@@ -15,7 +15,7 @@ var server = app.listen(5500,function(){
 const io = require("socket.io")(server,{
   allowEIO3:true,
 });
-app.use(express.static(path.join(__dirname,"/frontend")));//frontend/index.html.(if u wanna connet it to the client side.).
+app.use(express.static(path.join(__dirname,"")));//frontend/index.html.(if u wanna connet it to the client side.).
 
 
 
@@ -37,7 +37,7 @@ io.on("connection",(socket)=>{
     /* we r creating the interface for both user's to seee each other*/
     
 
-    
+
   other_user.forEach((v)=>{
     socket.to(v.connectionId).emit("inform_others_about_me",{
       other_user_id: data.displayName,
