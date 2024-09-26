@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/7433d3320f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./CSS/responsive.css">
+    <title>Google Meet Clone</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="server.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+    <!-- header section  -->
+    <!-- Your existing header code -->
+
+    <!-- main section with join input -->
+    <section class="text-gray-600 body-font">
+        <div class="container mx-auto flex md:px-16 px-5 md:py-24 py-12 md:flex-row flex-col items-center">
+            <div class="lg:flex-grow md:w-1/2 md:pr-24 md:pr-16 flex flex-col md:items-start text-left mb-16 md:mb-0 items-center text-center premium_meeting">
+                <h1 class="md:title-font md:text-4xl text-2xl mb-10 font-medium text-gray-900 w-3/4 home-text" style="text-align: left; font-size: 50px; font-weight: bold;  line-height: 1;">
+                    Video calls with anyone, anywhere.
+                </h1>
+                <p class="mb-8 leading-relaxed w-[90%] md:text-lg text-normal text-gray-600 font-normal" style="text-align: left; font-size: 20px;">
+                    Stay connected and collaborate with friends, family and colleagues no matter where you are.
+                </p>
+                <div class="flex md:flex-row md:justify-center items-center flex-col start_meeting">
+
+                    <button type="button" class="md:inline-flex text-white bg-blue-600 border-0 py-2 px-6 md:mb-0 mb-4 focus:outline-none hover:bg-blue-800 rounded text-lg flex justify-center enter-code">
+                        <i class="fa-solid fa-video pr-2 py-1.5 newmeeting"></i>
+                        <a href="">Start a meeting</a>
+                    </button>
+
+                    <input type="text" id="join_meeting_input" class="md:ml-2 pl-5 inline-flex font-normal placeholder:text-gray-500 bg-white border border-gray-300 py-2 px-2 outline-gray-500 rounded text-lg relative join_meeting_input" placeholder="Enter a meeting code">
+
+                    <p class="md:ml-4 mt-2.5 text-gray-500 font-semibold cursor-pointer text-[17px] join_text">Join</p>
+                </div>
+
+                <a href="https://support.google.com/accounts/answer/27441?hl=en" class="mt-10 font-medium">
+                    Don't have an account?
+                    <span class="text-blue-500 cursor-pointer">Get Started Now</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer  -->
+    <footer class="text-gray-600 body-font bg-gray-200">
+        <div class="container md:px-5 py-8 pt-10 mx-auto flex items-center justify-center md:flex-row flex-col">
+            <a href="#" class="flex w-40">
+                <img src="./images/logo.svg" alt="footer logo" class="cursor-pointer">
+            </a>
+        </div>
+    </footer>
+
+    <!-- Properly link jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(function () {
+            // Event listener for the Join button
+            $(".join_text").on("click", function () {
+                // Get the value from the input field
+                var joinval = $("#join_meeting_input").val();
+                
+                // If the input is empty, alert the user
+                if (!joinval) {
+                    alert("Please enter a meeting code");
+                    return;
+                }
+
+                // Create the meeting URL with the input value
+                var meetingurl = window.location.origin + "/Room.html?meetingID=" + joinval;
+
+                // Redirect to the new URL
+                window.location.replace(meetingurl);
+            });
+            $(document).on("click",".newmeeting",function(){
+                var eightdigitvalue =Math.floor(Math.random()*100000000);
+                var meetingurl = window.location.origin+"?meetingid="+eightdigitvalue;
+                window.location.replace(meetingurl);
+            })
+        });
+    </script>
+</body>
+
+</html>

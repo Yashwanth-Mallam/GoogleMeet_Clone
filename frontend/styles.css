@@ -1,148 +1,65 @@
-/* Reset some default margins and paddings */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-body, html {
-    height: 100%;
-    font-family: Arial, sans-serif;
-}
 
-/* Main container for the meeting room */
-.meeting-room {
+.home-wrap{
+    background-color: rgb(31,30,30);
+    color: aliceblue;
+}
+.g-top{
+    height: 89vh;
     position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #1c1c1c;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
+.video-wrap{
+    height: 600px;
 
-/* Header - top controls/status */
-.header {
+}
+.video-wrap>*{
+    flex: 1 1 250px;
+    border: 1px solid white;
+}
+.g-top-left{
     position: absolute;
-    top: 0;
     right: 0;
-    padding: 20px;
+    height: 8vh;
+    top: 0;
+    border-bottom-left-radius:10px ;
+    background-color: aliceblue;
+    color: rgb(39, 36, 36);
 }
-
-.status-bar {
+.top-left-participant-wrap{
     position: relative;
 }
-
-.status-icon {
-    width: 30px;
-    height: 30px;
-}
-
-/* Content area - avatar and user name in the center */
-.content {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.avatar img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 4px solid #555;
-}
-
-#user-name {
-    margin-top: 15px;
-    font-size: 18px;
-    color: #ccc;
-}
-
-/* Footer for meeting details and control bar */
-.footer {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #222;
-}
-
-.meeting-details {
-    color: #999;
-}
-
-.meeting-details p {
-    margin-bottom: 5px;
-}
-
-.control-bar {
-    display: flex;
-    gap: 20px;
-}
-
-.control-icon {
-    background-color: #444;
-    border: none;
-    padding: 15px;
-    font-size: 18px;
-    border-radius: 50%;
+.cursor-pointer{
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    padding: 5px;
 
-.control-icon img {
-    width: 30px;
-    height: 30px;
 }
-
-.control-icon:hover {
-    background-color: #666;
+.cursor-pointer:hover{
+    cursor: pointer;
+    padding: 5px;
+    background-color: rgb(126,125,125);
+    border-radius: 5px;
 }
-
-#hangup-button {
-    background-color: red;
+.topleft-paticipant-count{
+    position: absolute;
+    top: -2px;
+    right: -3px;
+    font-size: 15px;
 }
-
-#hangup-button:hover {
-    background-color: darkred;
+.g-bottom{
+    margin: 0px -10px;
+    padding: 0 20px;
+    box-shadow: 0 0 5px black;
+    z-index: 2;
 }
-/* Control Bar Container */
-.control-bar {
-    display: flex;
-    justify-content: space-around; /* Adjust spacing between icons */
-    align-items: center; /* Vertically center icons */
-    padding: 10px; /* Adjust padding around the bar */
-    background-color: #f0f0f0; /* Optional: Background color */
-    border-top: 1px solid #ddd; /* Optional: Border at the top */
+.bottom-left{
+    position: relative;
+    padding: 5px;
 }
-
-/* Individual Control Icons */
-.control-icon {
-    background: none; /* Remove default background */
-    border: none; /* Remove default border */
-    padding: 5px; /* Reduce padding around icons */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: transform 0.3s ease; /* Smooth scaling effect */
-}
-
-.control-icon img {
-    width: 24px; /* Adjust icon size */
-    height: 24px; /* Adjust icon size */
-}
-
-/* Optional: Hover effect for better UI */
-.control-icon:hover {
-    transform: scale(1.1); /* Slightly enlarge icon on hover */
+.action-icon-style{
+ height: 40px;
+ width: 40px;
+ border: 1px solid lightgray;
+ border-radius: 50%;
+ font-size: 8px;
+ align-items: center;
 }
