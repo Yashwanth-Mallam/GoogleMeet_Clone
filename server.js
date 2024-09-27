@@ -10,13 +10,19 @@ var server = app.listen(3000,function(){
   console.log("sever Lisining at port 3000");
 })
 
+// Serve static files from the current directory (including index.html)
+app.use(express.static(path.join(__dirname)));
 
+// Alternatively, serve index.html directly when accessing the root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const io = require("socket.io")(server,{
   allowEIO3:true,
 });
-app.use(express.static(path.join(__dirname,"")));//frontend/index.html.(if u wanna connet it to the client side.).
-
+app.use(express.static(path.join(__dirname)));//frontend/index.html.(if u wanna connet it to the client side.).
+/*lsof -i :3000 kill -9 PID */
 
 
 var userConnections=[];
@@ -43,9 +49,18 @@ io.on("connection",(socket)=>{
       other_user_id: data.displayName,
       connId: socket.id,
     })
-  })    
+  })  
+  socket.emit("inform_me_about_other_user", other_user);
 
   });
+
+    socket.on("SDPProcess",(data) => {
+      socket.to(data.to_connid).emit("SDPProcess",{
+        message: data.message,
+        from_connid: socket.id,
+      })
+    })
+
 });
 
 
