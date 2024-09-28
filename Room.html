@@ -33,7 +33,7 @@
     <main class="d-flex flex-column home-wrap">
         <div class=" g-top text-light">
             <div class="top-remote-video-show-wrap d-flex">
-                <div id="meetingContainer" class="w-75 d-none">
+                <div id="meetingContainer" class="w-75"  style="display: none;">
                     <div class="callwrap" style="background-color: black;">
                         <div class="video-wrap" id="divusers" style="display: flex; flex-wrap: wrap;">
                             <div id="me" class="user display-center flex-column">
@@ -46,7 +46,7 @@
                                 <h2 class="display-center" style="font-size: 14px;"></h2>
                                 <div class="display-center">       
                                     <video autoplay muted></video>
-                                    <audio autoplay controls muted style="display: none;"></audio>
+                                    <audio autoplay controls style="display: none;"></audio>
                                 </div>
                             </div>
                         </div>
@@ -76,10 +76,10 @@
                 <div class="mic-toggle-wrap action-icon-style display-center mr-2 cursor-pointer" style="margin-left: 600px;" id="micemuteunmute">
                     <span class="material-icons">mic_off</span>
                 </div>
-                <div class="end-call-wrap action-icon-style display-center mr-2 cursor-pointer" id="videoCamOnOff">
+                <div class="end-call-wrap action-icon-style display-center mr-2 cursor-pointer">
                     <span class="material-icons text-danger">call</span>
                 </div>
-                <div class="video-toggle-wrap action-icon-style display-center cursor-pointer">
+                <div class="video-toggle-wrap action-icon-style display-center cursor-pointer" id="videoCamOnOff">
                     <span class="material-icons">videocam_off</span>
                 </div>
             </div>

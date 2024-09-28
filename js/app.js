@@ -8,6 +8,7 @@ var AppProcess = (function (){
     var audio;
     var isAudioMute = true;
     var rtp_aud_senders= [];
+    var rtp_vid_senders = [];
     var video_state = {
         None:0,
         Camara:1,
@@ -15,9 +16,10 @@ var AppProcess = (function (){
     }
     var video_st =video_state.None;
     var videoCamTrack;
+     
     
     
-
+/*stoped at 3.54 */
     /*for server functions*/
 
     var serverProcess;
@@ -43,7 +45,7 @@ var AppProcess = (function (){
                 updateMediaSenders(audio,rtp_aud_senders);
             }else{
                 audio.enable =false;
-                $(this).html("<span class='material-icons'>mic</span>");
+                $(this).html("<span class='material-icons'>mic-off</span>");
                 removeMediaSenders(rtp_aud_senders);
             }
             isAudioMute = !isAudioMute;
@@ -61,12 +63,76 @@ var AppProcess = (function (){
             if (video_st == video_state.ScreenShare){
                 await videoProcess(video_state.None)
             }else {
-                videoProcess(video_state.ScreenShare)
+               await videoProcess(video_state.ScreenShare)
             }
-        })
+        });
     }
+
+    async function loadAudio() {
+        try{
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video : false,
+                audio: true
+            });
+            audio = stream.getAudioTrack()[0];
+            audio.enable = false;
+            console.log("Audio is loaded:",audio);
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    function connection_status(connection){
+        if (connection && (connection.connectionState == "new" || 
+            connection.connectionState == "connecting" || 
+            connection.connectionState == "connected")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    // to update the operations performed in others screen
+    async function updateMediaSenders(track,rtp_vid_sender){
+
+        for(var con_id in peers_connection_ids){
+            if(connection_status(peers_connection[con_id])){
+                if(rtp_senders[con_id] && rtp_senders[con_id].track){
+                    rtp_senders[con_id].replaceTrack(track);
+                }else{
+                    rtp_senders[con_id] == peers_connection[con_id].addTrack(track);
+                }
+            }
+        }
+    }
+
+    function removeVideoSenders(rtp_senders){
+        for(var con_id in peers_connection_ids){
+            if(rtp_senders[con_id] && connection_status(peers_connection[con_id])){
+                peers_connection[con_id].removeTrack(rtpSenders[con_id]);
+                rtp_senders[con_id] = null;
+            }
+        }
+    }
+
+    function removeVideoStream(rtp_vid_senders){
+        if( videoCamTrack){
+            videoCamTrack.stop();
+            videoCamTrack = null;
+            local_div.srcObject = null;
+            removeVideoSenders(rtp_aud_senders);
+        }
+    }
+
     async function videoProcess(newVideoState){
-        
+        if(newVideoState == video_state.None){
+            $("#videoCamOnOff").html("<span class='material-icons'>videocam_off</span>");
+            
+            video_st = newVideoState;
+            removeVideoStream(rtp_vid_senders);
+        }
+        if(newVideoState == video_state.Camara){
+            $("#videoCamOnOff").html("<span class='material-icons'>videocam_on</span>");
+        }
         try{
             var vstream = null;
             if(newVideoState == video_state.Camara){
@@ -90,7 +156,8 @@ var AppProcess = (function (){
                 videoCamTrack = vstream.getVideoTracks()[0];
                 if(videoCamTrack){
                     local_div.srcObject = new MediaStream([videoCamTrack]);
-                    alert("video cam found");
+                    updateMediaSenders(videoCamTrack,rtp_vid_senders);
+
                 }
             }
         }catch(e){
@@ -145,7 +212,9 @@ var AppProcess = (function (){
                 remoteVideoPlayer.srcObject = remote_vid_stream[connid];
                 remoteVideoPlayer.load();
             }else if (event.track.kind == "audio"){
-                remote_aud_stream[connid].getAudioTrack().forEach((t)=> remote_aud_stream[connid].removeTrack(t));
+                remote_aud_stream[connid]
+                .getAudioTrack()
+                .forEach((t)=> remote_aud_stream[connid].removeTrack(t));
                 remote_aud_stream[connid].addTrack(event.track);
 
                 var remoteAudioPlayer = document.getElementById("a_"+connid);
@@ -157,6 +226,14 @@ var AppProcess = (function (){
 
         peers_connection_ids[connid]=connid;
         peers_connection[connid] = connection;
+
+        if(video_st == video_state.Camara || video_st == video_state.ScreenShare){
+           if(videoCamTrack){
+                updateMediaSenders(videoCamTrack,rtp_vid_sender)
+
+           }
+
+        }
 
         return connection;
     };
@@ -206,6 +283,27 @@ var AppProcess = (function (){
         }   
     }
 
+    async function closeConnection(connid){
+        peers_connection_ids[connid]=null;
+        if(peers_connection[connid]){
+            peers_connection[connid].close();
+            peers_connection[connid] = null;
+
+        }
+        if(remote_aud_stream[connid]){
+            remote_aud_stream[connid].getTrack().forEach((t)=> {
+                if(t.stop()) t.stop();
+            }) 
+            remote_aud_stream[connid] = null;
+        }
+        if(remote_vid_stream[connid]){
+            remote_vid_stream[connid].getTrack().forEach((t)=> {
+                if(t.stop()) t.stop();
+            }) 
+            remote_vid_stream[connid] = null;
+        }
+    }
+
     return{
         setNewConnection: async function(connid) {
             await setConnection(connid);
@@ -215,6 +313,9 @@ var AppProcess = (function (){
        },
        processClientFunc: async function (data, from_connid) {
         await SDPProcess(data,from_connid);
+      },
+      closeConnectionCall: async function (connid) {
+        await closeConnection(connid);
       },
     };
 })();
@@ -229,8 +330,12 @@ var MyApp = (function (){
     var user_id="";
     var meeting_id="";
     function  init(uid,mid) {
+        /* to specifie the self as me and other participants as others */
         user_id=uid;
         meeting_id = mid;
+        $("#meetingContainer").show();
+        $("#h2").text(user_id+"(Me)"); 
+        document.title = user_id;
         event_process_for_signaling_sever();
     }
     /*handling the user's signal*/
@@ -259,6 +364,11 @@ var MyApp = (function (){
                 }
             }
         });
+        // for removed user.
+        socket.on("inform_others_disconnected_user",function(data){
+            $("#"+data.connId).remove();
+            AppProcess.closeConnectionCall(data.connId);
+        })
         
         socket.on("inform_others_about_me",function(data){
             addUser(data.other_user_id, data.connId);

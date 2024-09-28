@@ -21,17 +21,19 @@ app.get('/', (req, res) => {
 const io = require("socket.io")(server,{
   allowEIO3:true,
 });
-app.use(express.static(path.join(__dirname)));//frontend/index.html.(if u wanna connet it to the client side.).
-/*lsof -i :3000 kill -9 PID */
+
 
 
 var userConnections=[];
 // initiating the soceket.
+//change the logic here 
 io.on("connection",(socket)=>{
   console.log("socket id is",socket.id);
   socket.on("userconnect",(data) =>{
     console.log("userconnect",data.displayName,data.meetingid);
+
     var other_user =userConnections.filter((p)=>p.meeting_id == data.meetingid);
+    
     userConnections.push({
       connectionId:socket.id,
       user_id: data.displayName,
@@ -40,7 +42,7 @@ io.on("connection",(socket)=>{
 
 
 
-    /* we r creating the interface for both user's to seee each other*/
+    // we r creating the interface for both user's to seee each other
     
 
 
@@ -59,8 +61,27 @@ io.on("connection",(socket)=>{
         message: data.message,
         from_connid: socket.id,
       })
-    })
+    });
+
+    socket.on("disconnected",function(){
+      console.log("User Disconnected");
+      var disUser = userConnections.find((p) => p.connectionId == socket.id);
+      if (disUser){
+        var meetingid = disUser.meeting_id;
+        userConnections = userConnections.filter(
+          (p) => p.connectionId != socket.id
+        );
+        var list = userConnections.filter((p)=> p.meeting_id == meetingid);
+        list.forEach((v) =>{
+          socket.to(v.connectionId).emit("inform_others_disconnected_user",{
+            connId: socket.id,
+          });
+        });
+      }
+    });
 
 });
 
+
+ 
 

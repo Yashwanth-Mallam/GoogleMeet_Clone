@@ -9,11 +9,11 @@
     position: relative;
 }
 .video-wrap{
-    height: 600px;
+    height: 650px;
 
 }
 .video-wrap>*{
-    flex: 1 1 250px;
+    flex: 1 1 200px;
     border: 1px solid white;
 }
 .g-top-left{
@@ -62,4 +62,18 @@
  border-radius: 50%;
  font-size: 8px;
  align-items: center;
+}
+
+
+.top-remote-video-show-wrap{
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+video {
+    border: 1px solid gray;
+    width: 300px; /* Responsive width */
+     /* Keep aspect ratio */
+
 }
