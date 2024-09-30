@@ -16,7 +16,7 @@ var AppProcess = (function (){
     }
     var video_st =video_state.None;
     var videoCamTrack;
-     
+    let rtp_senders = [];
     
     
 /*stoped at 3.54 */
@@ -99,7 +99,7 @@ var AppProcess = (function (){
                 if(rtp_senders[con_id] && rtp_senders[con_id].track){
                     rtp_senders[con_id].replaceTrack(track);
                 }else{
-                    rtp_senders[con_id] == peers_connection[con_id].addTrack(track);
+                    rtp_senders[con_id] = peers_connection[con_id].addTrack(track);
                 }
             }
         }
@@ -204,7 +204,7 @@ var AppProcess = (function (){
             }
 
             if (event.track.kind == "video"){
-                remote_vid_stream[connid].getVideoTrack().forEach((t)=> remote_vid_stream[connid].removeTrack(t));
+                remote_vid_stream[connid].getVideoTracks().forEach((t)=> remote_vid_stream[connid].removeTrack(t));
                 remote_vid_stream[connid].addTrack(event.track);
 
                 var remoteVideoPlayer = document.getElementById("v_"+connid);
@@ -229,7 +229,7 @@ var AppProcess = (function (){
 
         if(video_st == video_state.Camara || video_st == video_state.ScreenShare){
            if(videoCamTrack){
-                updateMediaSenders(videoCamTrack,rtp_vid_sender)
+                updateMediaSenders(videoCamTrack,rtp_vid_senders);
 
            }
 
@@ -321,7 +321,6 @@ var AppProcess = (function (){
 })();
     
 
-    
 
 /*creating app and its functionalities*/
 
@@ -333,6 +332,7 @@ var MyApp = (function (){
         /* to specifie the self as me and other participants as others */
         user_id=uid;
         meeting_id = mid;
+        console.log("User ID:", user_id, "Meeting ID:", meeting_id);
         $("#meetingContainer").show();
         $("#h2").text(user_id+"(Me)"); 
         document.title = user_id;
@@ -356,12 +356,17 @@ var MyApp = (function (){
 
                AppProcess.init(SDP_function,socket.id)
 
-                if(user_id!=""){
-                    socket.emit("userconnect",{
-                        displayName:user_id,
-                        meetingid:meeting_id
-                    });
-                }
+               if (user_id != "" && meeting_id != "") {
+                console.log("User ID:", user_id);
+                console.log("Meeting ID:", meeting_id); /* */ // Log this to ensure it's correct
+    
+                socket.emit("userconnect", {
+                    displayName: user_id,
+                    meetingid: meeting_id
+                });
+            } else {
+                console.error("User ID or Meeting ID is missing.");
+            }
             }
         });
         // for removed user.
@@ -397,6 +402,8 @@ var MyApp = (function (){
         newDivId.find("video").attr("id","v_"+connId);
         newDivId.find("audio").attr("id","a_"+connId);
         newDivId.show();
+        console.log("Added user:", other_user_id, "with connection ID:", connId); // Debugging line
+        $("#meetingContainer").append(newDivId);
      
     }
 

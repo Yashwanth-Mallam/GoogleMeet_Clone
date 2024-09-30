@@ -1,4 +1,4 @@
-
+/*
 
 .home-wrap{
     background-color: rgb(31,30,30);
@@ -65,15 +65,5 @@
 }
 
 
-.top-remote-video-show-wrap{
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
 
-video {
-    border: 1px solid gray;
-    width: 300px; /* Responsive width */
-     /* Keep aspect ratio */
-
-}
+*/

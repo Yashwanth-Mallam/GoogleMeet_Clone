@@ -6,12 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="./images/favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7433d3320f.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./CSS/responsive.css">
     <title>Google Meet Clone</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-    <script src="server.js"></script>
+
     <script src="js/app.js"></script>
 </head>
 
@@ -31,9 +30,9 @@
                 </p>
                 <div class="flex md:flex-row md:justify-center items-center flex-col start_meeting">
 
-                    <button type="button" class="md:inline-flex text-white bg-blue-600 border-0 py-2 px-6 md:mb-0 mb-4 focus:outline-none hover:bg-blue-800 rounded text-lg flex justify-center enter-code">
-                        <i class="fa-solid fa-video pr-2 py-1.5 newmeeting"></i>
-                        <a href="">Start a meeting</a>
+                    <button type="button" class="md:inline-flex text-white bg-blue-600 border-0 py-2 px-6 md:mb-0 mb-4 focus:outline-none hover:bg-blue-800 rounded text-lg flex justify-center enter-code newmeeting">
+                        <i class="fa-solid fa-video pr-2 py-1.5 "></i>
+                        <p>Start a meeting</p>
                     </button>
 
                     <input type="text" id="join_meeting_input" class="md:ml-2 pl-5 inline-flex font-normal placeholder:text-gray-500 bg-white border border-gray-300 py-2 px-2 outline-gray-500 rounded text-lg relative join_meeting_input" placeholder="Enter a meeting code">
@@ -53,7 +52,7 @@
     <footer class="text-gray-600 body-font bg-gray-200">
         <div class="container md:px-5 py-8 pt-10 mx-auto flex items-center justify-center md:flex-row flex-col">
             <a href="#" class="flex w-40">
-                <img src="./images/logo.svg" alt="footer logo" class="cursor-pointer">
+                <img src="frontend/images/logo.svg" alt="footer logo" class="cursor-pointer">
             </a>
         </div>
     </footer>
@@ -63,26 +62,20 @@
 
     <script>
         $(function () {
-            // Event listener for the Join button
+            // perfect join meeting
             $(".join_text").on("click", function () {
-                // Get the value from the input field
                 var joinval = $("#join_meeting_input").val();
-                
-                // If the input is empty, alert the user
+                var meetingurl = window.location.origin + "/Room.html?meetingID=" + joinval;
                 if (!joinval) {
                     alert("Please enter a meeting code");
                     return;
                 }
-
-                // Create the meeting URL with the input value
-                var meetingurl = window.location.origin + "/Room.html?meetingID=" + joinval;
-
-                // Redirect to the new URL
                 window.location.replace(meetingurl);
             });
+            // to create the new meeting ID.
             $(document).on("click",".newmeeting",function(){
                 var eightdigitvalue =Math.floor(Math.random()*100000000);
-                var meetingurl = window.location.origin+"?meetingid="+eightdigitvalue;
+                var meetingurl = window.location.origin+"/Room.html?meetingid="+eightdigitvalue;
                 window.location.replace(meetingurl);
             })
         });
